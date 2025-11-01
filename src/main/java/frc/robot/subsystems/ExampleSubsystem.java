@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.controls.*;
 
 public class ExampleSubsystem extends SubsystemBase {
   private final TalonFX stage1Left = new TalonFX(1);
   private final TalonFX stage1Right = new TalonFX(2);
   private final TalonFX stage2Left = new TalonFX(3);
   private final TalonFX stage2Right = new TalonFX(4);
+  private final DutyCycleOut dutyCycleOut = new DutyCycleOut(0);
   /** Creates a new ExampleSubsystem. */
   public ExampleSubsystem() {}
 
@@ -28,22 +30,13 @@ public class ExampleSubsystem extends SubsystemBase {
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          stage1Left.set(percent);
-          stage1Right.set(percent);
-          stage2Left.set(percent);
-          stage2Right.set(percent);
+          stage1Left.setControl(dutyCycleOut.withOutput(percent));
+          stage1Right.setControl(dutyCycleOut.withOutput(percent));
+          stage2Left.setControl(dutyCycleOut.withOutput(percent));
+          stage2Right.setControl(dutyCycleOut.withOutput(percent));
         });
   }
 
-  public Command stopMotorCommand(){
-    return runOnce(
-      () -> {
-        stage1Left.set(0);
-        stage1Right.set(0);
-        stage2Left.set(0);
-        stage2Right.set(0);
-      });
-  }
 
   /**
    * An example method querying a boolean state of the subsystem (for example, a digital sensor).
@@ -58,6 +51,7 @@ public class ExampleSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    runMotorsAtPercentCommand(0.3);
   }
 
   @Override
