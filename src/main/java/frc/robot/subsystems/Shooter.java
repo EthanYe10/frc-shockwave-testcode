@@ -27,7 +27,7 @@ public class Shooter extends SubsystemBase {
     topRightShooter.getConfigurator().apply(config);
   }
 
-  private void runMotorsAtPercent(double percent) {
+  public void runMotorsAtPercent(double percent) {
     bottomLeftShooter.set(percent);
     bottomRightShooter.set(percent);
     topLeftShooter.set(-percent);

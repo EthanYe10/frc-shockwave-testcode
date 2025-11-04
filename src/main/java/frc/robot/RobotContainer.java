@@ -23,11 +23,6 @@ import java.util.Set;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Shooter shooter = new Shooter();
-
-  public Shooter getShooter() {
-    return shooter;
-  }
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -49,12 +44,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.rightTrigger().whileTrue(
-      Commands.defer(
-        () -> shooter.runMotorsAtPercentCommand(m_driverController.getRightTriggerAxis()),
-        Set.of(shooter)
-      ).repeatedly()
-    );
+    // m_driverController.rightTrigger().whileTrue(
+    //   Commands.defer(
+    //     () -> shooter.runMotorsAtPercentCommand(m_driverController.getRightTriggerAxis()),
+    //     Set.of(shooter)
+    //   ).repeatedly()
+    // );
   }
 
   /**
@@ -64,6 +59,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(shooter);
+    return null;
   }
 }

@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -15,8 +20,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private final XboxController m_driverController =
+      new XboxController(Constants.OperatorConstants.kDriverControllerPort);
 
-  private final RobotContainer m_robotContainer;
+  // private final RobotContainer m_robotContainer;
+
+  private final TalonFX bottomLeftShooter = new TalonFX(1, "canivore"); // bottom left
+  private final TalonFX bottomRightShooter = new TalonFX(21, "canivore");// bottom right
+  private final TalonFX topRightShooter = new TalonFX(15, "canivore"); // top right
+  private final TalonFX topLeftShooter = new TalonFX(3, "canivore"); // top left
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -24,9 +37,21 @@ public class Robot extends TimedRobot {
    */
   public Robot() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    // // autonomous chooser on the dashboard.
+    // m_robotContainer = new RobotContainer();
+    TalonFXConfiguration config = new TalonFXConfiguration();
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    bottomLeftShooter.getConfigurator().apply(config);
+    bottomRightShooter.getConfigurator().apply(config);
+    topLeftShooter.getConfigurator().apply(config);
+    topRightShooter.getConfigurator().apply(config);
     
+  }
+  public void runMotorsAtPercent(double percent) {
+    bottomLeftShooter.set(percent);
+    bottomRightShooter.set(percent);
+    topLeftShooter.set(-percent);
+    topRightShooter.set(-percent);
   }
 
   /**
@@ -81,7 +106,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    
+    // double triggerValue = m_driverController.getRightTriggerAxis();
+    // runMotorsAtPercent(triggerValue);
+    // runMotorsAtPercent(1);
+    // runMotorsAtPercent(0.95);
+    // runMotorsAtPercent(0.9);
+    // runMotorsAtPercent(0.85);
+    // runMotorsAtPercent(0.8);
+    runMotorsAtPercent(0.01);
   }
 
   @Override
